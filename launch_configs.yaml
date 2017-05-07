@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ''
+Resources:
+  ApiTierLaunchConfiguration:
+    Properties:
+      ImageId: !Ref ApiTierAmiIdParm
+      InstanceType: !Ref ApiTierInstanceTypeParm
+      UserData:
+        Fn::Base64: !Sub |
+           #!/bin/bash -xe
+           yum update -y aws-cfn-bootstrap
+           echo ${AppTierVersionNumberParm}
+           /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource ApiTierLaunchConfiguration --region ${AWS::Region}
+           /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource ApiTierLaunchConfiguration --region ${AWS::Region}
+    Type: AWS::AutoScaling::LaunchConfiguration
+  CustomerAppLaunchConfiguration:
+    Properties:
+      ImageId: !Ref CustomerAppAmiIdParm
+      InstanceType: !Ref CustomerAppInstanceTypeParm
+      UserData:
+        Fn::Base64: !Sub |
+           #!/bin/bash -xe
+           echo ${AppTierVersionNumberParm}
+           yum update -y aws-cfn-bootstrap
+           /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource CustomerAppLaunchConfiguration --region ${AWS::Region}
+           /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource CustomerAppLaunchConfiguration --region ${AWS::Region}
+    Type: AWS::AutoScaling::LaunchConfiguration
+
+Parameters:
+  EnvironmentParm:
+    Type: String
+  ApiTierInstanceTypeParm:
+    Type: String
+  ApiTierAmiIdParm:
+    Type: AWS::EC2::Image::Id
+  CustomerAppInstanceTypeParm:
+    Type: String
+  CustomerAppAmiIdParm:
+    Type: AWS::EC2::Image::Id
+  AppTierVersionNumberParm:
+    Type: String
+
+
+Outputs:
+  ApiTierLaunchConfigurationOutput:
+    Export:
+      Name:
+        Fn::Sub: ${AWS::StackName}-ApiTierLaunchConfigurationOutput
+    Value:
+      Ref: ApiTierLaunchConfiguration
+  CustomerAppLaunchConfigurationOutput:
+    Export:
+      Name:
+        Fn::Sub: ${AWS::StackName}-CustomerAppLaunchConfigurationOutput
+    Value:
+      Ref: CustomerAppLaunchConfiguration

@@ -61,7 +61,7 @@ print(asg_config)
 new_config = {"Parameters": {}}
 for each_param in asg_config:
     new_config["Parameters"][each_param["ParameterKey"]] = each_param["ParameterValue"]
-
+print(new_config)
 with open("aws-fastup-build/asgs.staging.config.json", "w") as cw:
     cw.write(new_config)
 

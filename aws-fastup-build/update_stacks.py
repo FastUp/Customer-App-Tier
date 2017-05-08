@@ -63,7 +63,7 @@ for each_param in json.loads(asg_config):
     new_config["Parameters"][each_param["ParameterKey"]] = each_param["ParameterValue"]
 print(new_config)
 with open("aws-fastup-build/asgs.staging.config.json", "w") as cw:
-    cw.write(new_config)
+    json.dump(new_config,cw)
 
     # with open("aws-fastup-build/asgs.yaml") as template_stream:
     #     data = ""

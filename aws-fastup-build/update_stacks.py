@@ -52,7 +52,7 @@ while stack_not_ready:
     if time.time() - start_at > timeout:
         raise Exception("Timeout waiting for stack " + stack_name + " to be created after " + str(timeout) + " seconds.")
 
-with open("aws-fastup-build/asg.staging.config.json") as cr:
+with open("aws-fastup-build/asgs.staging.config.json") as cr:
     asg_config = cr.read()
     print(asg_config)
 

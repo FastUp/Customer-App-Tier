@@ -1,7 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: ''
 Resources:
-
   ApiTierAutoscalingGroup:
     UpdatePolicy:
       AutoScalingRollingUpdate:
@@ -22,9 +21,6 @@ Resources:
         - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PrivateGeneralPurposeSubnetAOutput"
         - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PrivateGeneralPurposeSubnetBOutput"
         - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PrivateGeneralPurposeSubnetCOutput"
-
-
-
       LaunchConfigurationName:
         Fn::ImportValue:
           !Sub "${LaunchConfigurationStackNameParm}-ApiTierLaunchConfigurationOutput"
@@ -52,7 +48,6 @@ Resources:
       LaunchConfigurationName:
         Fn::ImportValue:
           !Sub "${LaunchConfigurationStackNameParm}-CustomerAppLaunchConfigurationOutput"
-
     Type: AWS::AutoScaling::AutoScalingGroup
   CustomerAppTierScaleOutPolicy:
     Properties:

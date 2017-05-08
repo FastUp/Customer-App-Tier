@@ -45,9 +45,7 @@ timeout = 300
 start_at = time.time()
 while stack_not_ready:
     time.sleep(30)
-    stack_status = cf_client.describe_stacks(StackName=stack_name)
-    print(stack_status)
-    stack_status_dict = json.loads(stack_status)
+    stack_status_dict = cf_client.describe_stacks(StackName=stack_name)
     if stack_status_dict["Stacks"][0]["StackStatus"] == "CREATE_COMPLETE":
         stack_not_ready = False
     if time.time() - start_at > timeout:

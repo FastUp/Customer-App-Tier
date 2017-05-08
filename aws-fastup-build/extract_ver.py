@@ -1,6 +1,7 @@
 import re
 import xml.etree.ElementTree as ET
 import sys
+import os
 
 with open("pom.xml") as f:
     xmlstring = f.read()

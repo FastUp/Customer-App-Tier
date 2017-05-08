@@ -61,15 +61,15 @@ print(asg_config)
 with open("aws-fastup-build/asgs.staging.config.json", "w") as cw:
     cw.write(asg_config)
 
-with open("aws-fastup-build/asgs.yaml") as template_stream:
-    data = ""
-    lines = template_stream.readlines()
-    for line in lines:
-        data += line
-print data
-new_stack = cf_client.update_stack(
-    StackName="SpinSci-Asgs-1-0-0-staging",
-    TemplateBody=data,
-    Parameters=json.load(open("aws-fastup-build/asgs.staging.config.json"))
-)
-print(new_stack)
+# with open("aws-fastup-build/asgs.yaml") as template_stream:
+#     data = ""
+#     lines = template_stream.readlines()
+#     for line in lines:
+#         data += line
+# print data
+# new_stack = cf_client.update_stack(
+#     StackName="SpinSci-Asgs-1-0-0-staging",
+#     TemplateBody=data,
+#     Parameters=json.load(open("aws-fastup-build/asgs.staging.config.json"))
+# )
+# print(new_stack)

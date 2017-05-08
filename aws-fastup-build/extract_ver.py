@@ -11,7 +11,7 @@ pom = ET.fromstring(xmlstring)
 version = pom.find("version")
 
 if "SNAPSHOT" in version.text:
-    version_text = version.text + os.environ("CODEBUILD_BUILD_ID")
+    version_text = version.text + os.environ["CODEBUILD_BUILD_ID"]
 else:
     version_text = version.text
 

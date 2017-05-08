@@ -1,0 +1,132 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ''
+Resources:
+
+  ApiTierAutoscalingGroup:
+    UpdatePolicy:
+      AutoScalingRollingUpdate:
+        MaxBatchSize: 1
+        MinInstancesInService: 2
+        SuspendProcesses:
+          - HealthCheck
+          - ReplaceUnhealthy
+          - AZRebalance
+          - AlarmNotification
+          - ScheduledActions
+    Properties:
+      MaxSize: !Ref ApiTierAsgMaxSizeParm
+      MinSize: !Ref ApiTierAsgMinSizeParm
+      AvailabilityZones: !Ref ApiTierAsgAzsParm
+      DesiredCapacity: !Ref ApiTierAsgDesiredCapacityParm
+      VPCZoneIdentifier:
+        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PrivateGeneralPurposeSubnetAOutput"
+        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PrivateGeneralPurposeSubnetBOutput"
+        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PrivateGeneralPurposeSubnetCOutput"
+
+
+
+      LaunchConfigurationName:
+        Fn::ImportValue:
+          !Sub "${LaunchConfigurationStackNameParm}-ApiTierLaunchConfigurationOutput"
+    Type: AWS::AutoScaling::AutoScalingGroup
+  CustomerAppAutoscalingGroup:
+    UpdatePolicy:
+      AutoScalingRollingUpdate:
+        MaxBatchSize: 1
+        MinInstancesInService: 2
+        SuspendProcesses:
+          - HealthCheck
+          - ReplaceUnhealthy
+          - AZRebalance
+          - AlarmNotification
+          - ScheduledActions
+    Properties:
+      MaxSize: !Ref CustomerAppAsgMaxSizeParm
+      MinSize: !Ref CustomerAppAsgMinSizeParm
+      AvailabilityZones: !Ref CustomerAppAsgAzsParm
+      DesiredCapacity: !Ref CustomerAppAsgDesiredCapacityParm
+      VPCZoneIdentifier:
+        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PrivateGeneralPurposeSubnetAOutput"
+        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PrivateGeneralPurposeSubnetBOutput"
+        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PrivateGeneralPurposeSubnetCOutput"
+      LaunchConfigurationName:
+        Fn::ImportValue:
+          !Sub "${LaunchConfigurationStackNameParm}-CustomerAppLaunchConfigurationOutput"
+
+    Type: AWS::AutoScaling::AutoScalingGroup
+  CustomerAppTierScaleOutPolicy:
+    Properties:
+      AutoScalingGroupName: !Ref ApiTierAutoscalingGroup
+      AdjustmentType: ChangeInCapacity
+      PolicyType: SimpleScaling
+      ScalingAdjustment: 1
+    Type: AWS::AutoScaling::ScalingPolicy
+  CustomerAppTierCpuCreditsUsageHighAlarm:
+    Properties:
+      ComparisonOperator: GreaterThanThreshold
+      Threshold: !Ref CustomerAppTierCpuCreditsUsageHighThresholdParm
+      Dimensions:
+        - Name: AutoScalingGroupName
+          Value: !Ref ApiTierAutoscalingGroup
+      EvaluationPeriods: 1
+      MetricName: CPUCreditUsage
+      Namespace: AWS/EC2
+      Period: 300
+      Statistic: Average
+      AlarmActions:
+        - !Ref CustomerAppTierScaleOutPolicy
+    Type: AWS::CloudWatch::Alarm
+  CustomerAppTierScaleInPolicy:
+    Properties:
+      AutoScalingGroupName: !Ref ApiTierAutoscalingGroup
+      AdjustmentType: ChangeInCapacity
+      PolicyType: SimpleScaling
+      ScalingAdjustment: -1
+    Type: AWS::AutoScaling::ScalingPolicy
+  CustomerAppTierCpuCreditsUsageLowAlarm:
+    Properties:
+      ComparisonOperator: LessThanThreshold
+      Threshold: !Ref CustomerAppTierCpuCreditsUsageLowThresholdParm
+      Dimensions:
+        - Name: AutoScalingGroupName
+          Value: !Ref ApiTierAutoscalingGroup
+      EvaluationPeriods: 36
+      MetricName: CPUCreditUsage
+      Namespace: AWS/EC2
+      Period: 300
+      Statistic: Average
+      AlarmActions:
+        - !Ref CustomerAppTierScaleInPolicy
+    Type: AWS::CloudWatch::Alarm
+Parameters:
+  EnvironmentParm:
+    Type: String
+  ApiTierAsgMinSizeParm:
+    Type: String
+  ApiTierAsgMaxSizeParm:
+    Type: String
+  ApiTierAsgDesiredCapacityParm:
+    Type: String
+  ApiTierAsgAzsParm:
+    Type: List<AWS::EC2::AvailabilityZone::Name>
+
+
+  CustomerAppAsgMinSizeParm:
+    Type: String
+  CustomerAppAsgMaxSizeParm:
+    Type: String
+  CustomerAppAsgDesiredCapacityParm:
+    Type: String
+  CustomerAppAsgAzsParm:
+    Type: List<AWS::EC2::AvailabilityZone::Name>
+
+
+  LaunchConfigurationStackNameParm:
+    Type: String
+  NetworksStackNameParm:
+    Type: String
+
+  CustomerAppTierCpuCreditsUsageHighThresholdParm:
+    Type: Number
+  CustomerAppTierCpuCreditsUsageLowThresholdParm:
+    Type: Number

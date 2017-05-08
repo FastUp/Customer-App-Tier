@@ -1,0 +1,54 @@
+[
+  {
+    "ParameterKey": "EnvironmentParm",
+    "ParameterValue": "Staging"
+  },
+  {
+    "ParameterKey": "ApiTierAsgMinSizeParm",
+    "ParameterValue": "2"
+  },
+  {
+    "ParameterKey": "ApiTierAsgMaxSizeParm",
+    "ParameterValue": "10"
+  },
+  {
+    "ParameterKey": "ApiTierAsgDesiredCapacityParm",
+    "ParameterValue": "2"
+  },
+  {
+    "ParameterKey": "ApiTierAsgAzsParm",
+    "ParameterValue": "us-west-2a,us-west-2b,us-west-2c"
+  },
+  {
+    "ParameterKey": "CustomerAppAsgMinSizeParm",
+    "ParameterValue": "2"
+  },
+  {
+    "ParameterKey": "CustomerAppAsgMaxSizeParm",
+    "ParameterValue": "10"
+  },
+  {
+    "ParameterKey": "CustomerAppAsgDesiredCapacityParm",
+    "ParameterValue": "2"
+  },
+  {
+    "ParameterKey": "CustomerAppAsgAzsParm",
+    "ParameterValue": "us-west-2a,us-west-2b,us-west-2c"
+  },
+  {
+    "ParameterKey": "LaunchConfigurationStackNameParm",
+    "ParameterValue": "REPLACELAUNCHCONFIGSTACKNAME"
+  },
+  {
+    "ParameterKey": "NetworksStackNameParm",
+    "ParameterValue": "SpinSci-Network-1-0-0-staging"
+  },
+  {
+    "ParameterKey": "CustomerAppTierCpuCreditsUsageHighThresholdParm",
+    "ParameterValue": "24"
+  },
+  {
+    "ParameterKey": "CustomerAppTierCpuCreditsUsageLowThresholdParm",
+    "ParameterValue": "8"
+  }
+]

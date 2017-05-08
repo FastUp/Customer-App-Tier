@@ -9,8 +9,9 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      - version=`python aws-fastup-build/extract_ver.py`
-      - aws create-stack --stack-name SpinSciCustomerApp-$version
+      - pip install boto3
+      - python aws-fastup-build/update_stacks.py
+
 artifacts:
   files:
     - target/simplewar-1.0-SNAPSHOT.war

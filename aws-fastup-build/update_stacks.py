@@ -58,7 +58,7 @@ with open("aws-fastup-build/asgs.staging.config.json") as cr:
 
 asg_config = re.sub("REPLACELAUNCHCONFIGSTACKNAME", stack_name, asg_config)
 print(asg_config)
-with open("aws-fastup-build/asg.staging.config.json", "w") as cw:
+with open("aws-fastup-build/asgs.staging.config.json", "w") as cw:
     cw.write(asg_config)
 
 with open("aws-fastup-build/asgs.yaml") as template_stream:

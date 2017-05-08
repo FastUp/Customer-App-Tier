@@ -59,7 +59,7 @@ with open("aws-fastup-build/asgs.staging.config.json") as cr:
 asg_config = re.sub("REPLACELAUNCHCONFIGSTACKNAME", stack_name, asg_config)
 print(asg_config)
 new_config = {"Parameters": {}}
-for each_param in asg_config:
+for each_param in json.loads(asg_config):
     new_config["Parameters"][each_param["ParameterKey"]] = each_param["ParameterValue"]
 print(new_config)
 with open("aws-fastup-build/asgs.staging.config.json", "w") as cw:

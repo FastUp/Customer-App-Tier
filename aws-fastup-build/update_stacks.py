@@ -46,6 +46,7 @@ start_at = time.time()
 while stack_not_ready:
     time.sleep(30)
     stack_status_dict = cf_client.describe_stacks(StackName=stack_name)
+    print(stack_status_dict)
     if stack_status_dict["Stacks"][0]["StackStatus"] == "CREATE_COMPLETE":
         stack_not_ready = False
     if time.time() - start_at > timeout:
@@ -53,9 +54,10 @@ while stack_not_ready:
 
 with open("aws-fastup-build/asg.staging.config.json") as cr:
     asg_config = cr.read()
+    print(asg_config)
 
 asg_config = re.sub("REPLACELAUNCHCONFIGSTACKNAME", stack_name, asg_config)
-
+print(asg_config)
 with open("aws-fastup-build/asg.staging.config.json", "w") as cw:
     cw.write(asg_config)
 
@@ -64,8 +66,10 @@ with open("aws-fastup-build/asgs.yaml") as template_stream:
     lines = template_stream.readlines()
     for line in lines:
         data += line
+print data
 new_stack = cf_client.update_stack(
     StackName="SpinSci-Asgs-1-0-0-staging",
     TemplateBody=data,
     Parameters=json.load(open("aws-fastup-build/asgs.staging.config.json"))
 )
+print(new_stack)

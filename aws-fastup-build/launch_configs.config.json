@@ -22,10 +22,6 @@
   {
     "ParameterKey": "AppTierVersionNumberParm",
     "ParameterValue": "REPLACEAPPTIERVERSIONNUMBERPARM"
-  },
-  {
-    "ParameterKey": "CodePipelineExecutionRoleArnParm",
-    "ParameterValue": "arn:aws:iam::085224677438:role/SpinSci-Entities-1-0-0-sta-CodePipelineServiceRole-IE727LDSOY9G"
   }
 ]
 

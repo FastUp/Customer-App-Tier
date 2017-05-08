@@ -38,7 +38,7 @@ stack_name = "SpinSciCustomerApp-" + version_text
 new_stack = cf_client.create_stack(
     StackName=stack_name,
     TemplateBody=data,
-    Parameters=json.load("aws-fastup-build/launch_configs.config.json")
+    Parameters=json.load(open("aws-fastup-build/launch_configs.config.json"))
 )
 stack_not_ready = True
 timeout = 300
@@ -68,5 +68,5 @@ with open("aws-fastup-build/asgs.yaml") as template_stream:
 new_stack = cf_client.update_stack(
     StackName="SpinSci-Asgs-1-0-0-staging",
     TemplateBody=data,
-    Parameters=json.load("aws-fastup-build/asgs.staging.config.json")
+    Parameters=json.load(open("aws-fastup-build/asgs.staging.config.json"))
 )

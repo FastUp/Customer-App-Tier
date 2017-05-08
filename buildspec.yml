@@ -5,11 +5,14 @@ phases:
     commands:
       - echo Build started on `date`
       - ls -al
-      - mvn test
+      - mvn package
   post_build:
     commands:
       - echo Build completed on `date`
-      - mvn package
+      - version=`python aws-fastup-build/extract_ver.py`
+      - aws create-stack --stack-name SpinSciCustomerApp-$version
 artifacts:
   files:
     - target/simplewar-1.0-SNAPSHOT.war
+    - aws-fastup-build/launch_configs.config.json
+    - aws-fastup-build/launch_configs.yaml

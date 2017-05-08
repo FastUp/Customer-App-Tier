@@ -18,10 +18,13 @@
   {
     "ParameterKey": "CustomerAppAmiIdParm",
     "ParameterValue": "ami-4836a428"
-  }
-,
+  },
   {
     "ParameterKey": "AppTierVersionNumberParm",
-    "ParameterValue": "{{APPTIERVERSIONNUMBERPARM}}"
+    "ParameterValue": "REPLACEAPPTIERVERSIONNUMBERPARM"
+  },
+  {
+    "ParameterKey": "CodePipelineExecutionRoleArnParm",
+    "ParameterValue": "arn:aws:iam::085224677438:role/SpinSci-Entities-1-0-0-sta-CodePipelineServiceRole-IE727LDSOY9G"
   }
 ]

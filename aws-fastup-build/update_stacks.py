@@ -14,14 +14,14 @@ pom = ET.fromstring(xmlstring)
 version = pom.find("version")
 
 if "SNAPSHOT" in version.text:
-    version_text = version.text + os.environ["CODEBUILD_BUILD_ID"]
+    version_text = version.text + "-" + os.environ["CODEBUILD_BUILD_ID"]
 else:
     version_text = version.text
 
 with open("aws-fastup-build/launch_configs.config.json") as cr:
     launch_config_config = cr.read()
 
-version_text = version_text.replace(".", "-")
+version_text = version_text.replace(".", "-").replace(":", "-")
 
 launch_config_config = re.sub("REPLACEAPPTIERVERSIONNUMBERPARM", version_text, launch_config_config)
 
@@ -50,7 +50,6 @@ while stack_not_ready:
         stack_not_ready = False
     if time.time() - start_at > timeout:
         raise Exception("Timeout waiting for stack " + stack_name + " to be created after " + str(timeout) + " seconds.")
-
 
 with open("aws-fastup-build/asg.staging.config.json") as cr:
     asg_config = cr.read()

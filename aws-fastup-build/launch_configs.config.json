@@ -32,8 +32,16 @@
     "ParameterValue": "sdole-us-west-2"
   },
   {
-    "ParameterKey": "CustomerAppArtifactUrlParm",
-    "ParameterValue": "REPLACECUSTOMERAPPARTIFACTURLPARM"
+    "ParameterKey": "ReleaseArtifactsBucketParm",
+    "ParameterValue": "REPLACE_RELEASEARTIFACTSBUCKETPARM"
+  },
+  {
+    "ParameterKey": "ReleaseWarFileKeyParm",
+    "ParameterValue": "REPLACE_RELEASEWARFILEKEYPARM"
+  }
+,  {
+    "ParameterKey": "ContextRootParm",
+    "ParameterValue": "REPLACE_CONTEXTROOTPARM"
   }
 ]
 

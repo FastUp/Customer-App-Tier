@@ -27,9 +27,9 @@ war_file_key = "war_files/" + os.environ["CODEBUILD_BUILD_ID"].replace(":", "-")
 release_bucket_name = "spinsci-entities-1-0-0-sta-releaseartifactsbucket-mtqcxm5k34ox"
 upload_file_return = s3.upload_file("target/" + war_file_name, release_bucket_name, war_file_key)
 print(upload_file_return)
-region_prefix = "" if os.environ["AWS_DEFAULT_REGION"] == "us-east-1" else "-" + os.environ["AWS_DEFAULT_REGION"]
-war_s3_url = "https://" + release_bucket_name + ".s3" + region_prefix + ".amazonaws.com/" + war_file_key
-print(war_s3_url)
+# region_prefix = "" if os.environ["AWS_DEFAULT_REGION"] == "us-east-1" else "-" + os.environ["AWS_DEFAULT_REGION"]
+# war_s3_url = "https://" + release_bucket_name + ".s3" + region_prefix + ".amazonaws.com/" + war_file_key
+# print(war_s3_url)
 
 with open("aws-fastup-build/launch_configs.config.json") as cr:
     launch_config_config = cr.read()
@@ -37,7 +37,9 @@ with open("aws-fastup-build/launch_configs.config.json") as cr:
 version_text = version_text.replace(".", "-").replace(":", "-")
 # launch_config_config = re.sub("REPLACEAPPTIERVERSIONNUMBERPARM", version_text, launch_config_config)
 
-launch_config_config = re.sub("REPLACECUSTOMERAPPARTIFACTURLPARM", war_s3_url, launch_config_config)
+launch_config_config = re.sub("REPLACE_RELEASEARTIFACTSBUCKETPARM", release_bucket_name, launch_config_config)
+launch_config_config = re.sub("REPLACE_RELEASEWARFILEKEYPARM", war_file_key, launch_config_config)
+launch_config_config = re.sub("REPLACE_CONTEXTROOTPARM", war_file_name, launch_config_config)
 
 with open("aws-fastup-build/launch_configs.config.json", "w") as cw:
     cw.write(launch_config_config)

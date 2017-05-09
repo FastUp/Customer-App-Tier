@@ -12,9 +12,8 @@ Resources:
       UserData:
         Fn::Base64: !Sub |
            #!/bin/bash -xe
-           yum update -y aws-cfn-bootstrap
-           /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource ApiTierLaunchConfiguration --region ${AWS::Region}
-           /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource ApiTierLaunchConfiguration --region ${AWS::Region}
+           aws s3 cp s3://${ReleaseArtifactsBucketParm}/${ReleaseWarFileKeyParm} /opt/jetty/webapps/${ContextRootParm}
+           service jetty start
     Type: AWS::AutoScaling::LaunchConfiguration
   CustomerAppLaunchConfiguration:
     Properties:
@@ -28,96 +27,9 @@ Resources:
       UserData:
         Fn::Base64: !Sub |
            #!/bin/bash -xe
-           yum update -y aws-cfn-bootstrap
-           /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource CustomerAppLaunchConfiguration --region ${AWS::Region}
-           /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource CustomerAppLaunchConfiguration --region ${AWS::Region}
+           aws s3 cp s3://${ReleaseArtifactsBucketParm}${ReleaseWarFileKeyParm} /opt/jetty/webapps
+           service jetty start
     Type: AWS::AutoScaling::LaunchConfiguration
-    Metadata:
-      AWS::CloudFormation::Authentication:
-        S3AccessCreds:
-          type: S3
-          buckets:
-            - Fn::ImportValue: !Sub "${EntitiesStackNameParm}-ReleaseArtifactsBucketOutput"
-          roleName: CfDeployerRole
-
-      AWS::CloudFormation::Init:
-        configSets:
-          Install:
-          - StartCfn
-          - InstallApp
-          - StartJetty
-        StartCfn:
-          files:
-            /etc/cfn/cfn-hup.conf:
-              content:
-                Fn::Join:
-                - ''
-                - - '[main]
-
-                    '
-                  - stack=
-                  - Ref: AWS::StackId
-                  - '
-
-                    '
-                  - region=
-                  - Ref: AWS::Region
-                  - '
-
-                    '
-              group: root
-              mode: '000400'
-              owner: root
-            /etc/cfn/hooks.d/cfn-auto-reloader.conf:
-              content:
-                Fn::Join:
-                - ''
-                - - '[cfn-auto-reloader-hook]
-
-                    '
-                  - 'triggers=post.update
-
-                    '
-                  - 'path=Resources.CustomerAppLaunchConfiguration.Metadata.AWS::CloudFormation::Init
-
-                    '
-                  - 'action=/opt/aws/bin/cfn-init -v '
-                  - '         --stack '
-                  - Ref: AWS::StackName
-                  - '         --resource CustomerAppLaunchConfiguration '
-                  - '         --region '
-                  - Ref: AWS::Region
-                  - '
-
-                    '
-                  - 'runas=root
-
-                    '
-          services:
-            sysvinit:
-              cfn-hup:
-                enabled: 'true'
-                ensureRunning: 'true'
-                files:
-                - /etc/cfn/cfn-hup.conf
-                - /etc/cfn/hooks.d/cfn-auto-reloader.conf
-        InstallApp:
-          files:
-            /tmp/artifact:
-              source: !Ref CustomerAppArtifactUrlParm
-              authentication: S3AccessCreds
-              group: root
-              mode: '000400'
-              owner: root
-          commands:
-            copy_war:
-              command: cp /tmp/artifact/target/*.war /opt/jetty/webapps/
-        StartJetty:
-          services:
-            sysvinit:
-              jetty:
-                enabled: 'true'
-                ensureRunning: 'true'
 
 
 
@@ -132,13 +44,17 @@ Parameters:
     Type: String
   CustomerAppAmiIdParm:
     Type: AWS::EC2::Image::Id
-  CustomerAppArtifactUrlParm:
-    Type: String
   EntitiesStackNameParm:
     Type: String
   SshKeyPairNameParm:
     Type: AWS::EC2::KeyPair::KeyName
   NetworksStackNameParm:
+    Type: String
+  ReleaseWarFileKeyParm:
+    Type: String
+  ReleaseArtifactsBucketParm:
+    Type: String
+  ContextRootParm:
     Type: String
 
 

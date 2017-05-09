@@ -24,7 +24,7 @@
     "ParameterValue": "SpinSci-Entities-1-0-0-staging"
   },
   {
-    "ParameterKey": "NetworkStackNameParm",
+    "ParameterKey": "NetworksStackNameParm",
     "ParameterValue": "SpinSci-Network-1-0-0-staging"
   },
   {

@@ -9,7 +9,7 @@
   },
   {
     "ParameterKey": "ApiTierAmiIdParm",
-    "ParameterValue": "ami-4836a428"
+    "ParameterValue": "ami-0777ed67"
   },
   {
     "ParameterKey": "CustomerAppInstanceTypeParm",

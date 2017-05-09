@@ -20,7 +20,7 @@ Resources:
       KeyName: !Ref SshKeyPairNameParm
       InstanceType: !Ref CustomerAppInstanceTypeParm
       SecurityGroups:
-        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-BastionSecurityGroupIdOutput"
+        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-AppServerSecurityGroupIdOutput"
 
       UserData:
         Fn::Base64: !Sub |

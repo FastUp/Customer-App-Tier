@@ -4,22 +4,6 @@
     "ParameterValue": "Staging"
   },
   {
-    "ParameterKey": "ApiTierAsgMinSizeParm",
-    "ParameterValue": "2"
-  },
-  {
-    "ParameterKey": "ApiTierAsgMaxSizeParm",
-    "ParameterValue": "10"
-  },
-  {
-    "ParameterKey": "ApiTierAsgDesiredCapacityParm",
-    "ParameterValue": "2"
-  },
-  {
-    "ParameterKey": "ApiTierAsgAzsParm",
-    "ParameterValue": "us-west-2a,us-west-2b,us-west-2c"
-  },
-  {
     "ParameterKey": "CustomerAppAsgMinSizeParm",
     "ParameterValue": "2"
   },
@@ -52,14 +36,6 @@
     "ParameterValue": "8"
   },
   {
-    "ParameterKey": "ApiTierCpuCreditsUsageHighThresholdParm",
-    "ParameterValue": "24"
-  },
-  {
-    "ParameterKey": "ApiTierCpuCreditsUsageLowThresholdParm",
-    "ParameterValue": "8"
-  },
-  {
     "ParameterKey": "HealthCheckPathParm",
     "ParameterValue": "service"
   },
@@ -73,7 +49,7 @@
   },
   {
     "ParameterKey": "HostNameParm",
-    "ParameterValue": "spinsci"
+    "ParameterValue": "spinsci-customer-app-staging"
   },
   {
     "ParameterKey": "HealthCheckGracePeriodParm",

@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: ''
 Resources:
-  ApiTierAlb:
+  CustomerAppTierAlb:
     Properties:
       Subnets:
         - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PublicGeneralPurposeSubnetAOutput"
@@ -10,18 +10,18 @@ Resources:
       SecurityGroups:
         - Fn::ImportValue: !Sub "${NetworksStackNameParm}-AppTierAlbSecurityGroupIdOutput"
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
-  ApiTierAlbSslListener:
+  CustomerAppTierAlbSslListener:
     Properties:
-      LoadBalancerArn: !Ref ApiTierAlb
+      LoadBalancerArn: !Ref CustomerAppTierAlb
       DefaultActions:
-        - TargetGroupArn: !Ref ApiTierAlbTargetGroup
+        - TargetGroupArn: !Ref CustomerAppTierAlbTargetGroup
           Type: forward
       Port: 443
       Protocol: HTTPS
       Certificates:
         - CertificateArn: arn:aws:acm:us-west-2:085224677438:certificate/d203faf8-8641-4406-b117-75bd35c100be
     Type: AWS::ElasticLoadBalancingV2::Listener
-  ApiTierAlbCname:
+  CustomerAppTierAlbCname:
     Type: AWS::Route53::RecordSet
     Properties:
       Type: A
@@ -37,10 +37,10 @@ Resources:
             - "."
             - !Ref DomainNameParm
       AliasTarget:
-        HostedZoneId: !GetAtt ApiTierAlb.CanonicalHostedZoneID
-        DNSName: !GetAtt ApiTierAlb.DNSName
+        HostedZoneId: !GetAtt CustomerAppTierAlb.CanonicalHostedZoneID
+        DNSName: !GetAtt CustomerAppTierAlb.DNSName
 
-  ApiTierAlbTargetGroup:
+  CustomerAppTierAlbTargetGroup:
     Properties:
       HealthCheckPath:
         "Fn::Join":
@@ -60,91 +60,19 @@ Resources:
       Port: 8080
       Protocol: HTTP
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
-  ApiTierAlbListenerRule:
+  CustomerAppTierAlbListenerRule:
     Properties:
       Actions:
-        - TargetGroupArn: !Ref ApiTierAlbTargetGroup
+        - TargetGroupArn: !Ref CustomerAppTierAlbTargetGroup
           Type: forward
       Conditions:
         - Field: path-pattern
           Values:
             - !Ref EnvironmentParm
-      ListenerArn: !Ref ApiTierAlbSslListener
+      ListenerArn: !Ref CustomerAppTierAlbSslListener
       Priority: 100
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
 
-  ApiTierAutoscalingGroup:
-    UpdatePolicy:
-      AutoScalingRollingUpdate:
-        MaxBatchSize: 1
-        MinInstancesInService: 2
-        SuspendProcesses:
-          - HealthCheck
-          - ReplaceUnhealthy
-          - AZRebalance
-          - AlarmNotification
-          - ScheduledActions
-    Properties:
-      MaxSize: !Ref ApiTierAsgMaxSizeParm
-      HealthCheckType: ELB
-      TargetGroupARNs:
-        - !Ref ApiTierAlbTargetGroup
-      MinSize: !Ref ApiTierAsgMinSizeParm
-      AvailabilityZones: !Ref ApiTierAsgAzsParm
-      DesiredCapacity: !Ref ApiTierAsgDesiredCapacityParm
-      VPCZoneIdentifier:
-        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PrivateGeneralPurposeSubnetAOutput"
-        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PrivateGeneralPurposeSubnetBOutput"
-        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PrivateGeneralPurposeSubnetCOutput"
-      HealthCheckGracePeriod: !Ref HealthCheckGracePeriodParm
-      LaunchConfigurationName:
-        Fn::ImportValue:
-          !Sub "${LaunchConfigurationStackNameParm}-ApiTierLaunchConfigurationOutput"
-    Type: AWS::AutoScaling::AutoScalingGroup
-  ApiTierScaleOutPolicy:
-    Properties:
-      AutoScalingGroupName: !Ref ApiTierAutoscalingGroup
-      AdjustmentType: ChangeInCapacity
-      PolicyType: SimpleScaling
-      ScalingAdjustment: 1
-    Type: AWS::AutoScaling::ScalingPolicy
-  ApiTierCpuCreditsUsageHighAlarm:
-    Properties:
-      ComparisonOperator: GreaterThanThreshold
-      Threshold: !Ref ApiTierCpuCreditsUsageHighThresholdParm
-      Dimensions:
-        - Name: AutoScalingGroupName
-          Value: !Ref ApiTierAutoscalingGroup
-      EvaluationPeriods: 1
-      MetricName: CPUCreditUsage
-      Namespace: AWS/EC2
-      Period: 300
-      Statistic: Average
-      AlarmActions:
-        - !Ref ApiTierScaleOutPolicy
-    Type: AWS::CloudWatch::Alarm
-  ApiTierScaleInPolicy:
-    Properties:
-      AutoScalingGroupName: !Ref ApiTierAutoscalingGroup
-      AdjustmentType: ChangeInCapacity
-      PolicyType: SimpleScaling
-      ScalingAdjustment: -1
-    Type: AWS::AutoScaling::ScalingPolicy
-  ApiTierCpuCreditsUsageLowAlarm:
-    Properties:
-      ComparisonOperator: LessThanThreshold
-      Threshold: !Ref ApiTierCpuCreditsUsageLowThresholdParm
-      Dimensions:
-        - Name: AutoScalingGroupName
-          Value: !Ref ApiTierAutoscalingGroup
-      EvaluationPeriods: 36
-      MetricName: CPUCreditUsage
-      Namespace: AWS/EC2
-      Period: 300
-      Statistic: Average
-      AlarmActions:
-        - !Ref ApiTierScaleInPolicy
-    Type: AWS::CloudWatch::Alarm
   CustomerAppTierAutoscalingGroup:
     UpdatePolicy:
       AutoScalingRollingUpdate:
@@ -158,9 +86,13 @@ Resources:
           - ScheduledActions
     Properties:
       MaxSize: !Ref CustomerAppAsgMaxSizeParm
+      HealthCheckType: ELB
+      TargetGroupARNs:
+        - !Ref CustomerAppTierAlbTargetGroup
       MinSize: !Ref CustomerAppAsgMinSizeParm
       AvailabilityZones: !Ref CustomerAppAsgAzsParm
       DesiredCapacity: !Ref CustomerAppAsgDesiredCapacityParm
+      HealthCheckGracePeriod: !Ref HealthCheckGracePeriodParm
       VPCZoneIdentifier:
         - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PrivateGeneralPurposeSubnetAOutput"
         - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PrivateGeneralPurposeSubnetBOutput"
@@ -216,14 +148,6 @@ Resources:
 Parameters:
   EnvironmentParm:
     Type: String
-  ApiTierAsgMinSizeParm:
-    Type: String
-  ApiTierAsgMaxSizeParm:
-    Type: String
-  ApiTierAsgDesiredCapacityParm:
-    Type: String
-  ApiTierAsgAzsParm:
-    Type: List<AWS::EC2::AvailabilityZone::Name>
 
 
   CustomerAppAsgMinSizeParm:
@@ -244,10 +168,6 @@ Parameters:
   CustomerAppTierCpuCreditsUsageHighThresholdParm:
     Type: Number
   CustomerAppTierCpuCreditsUsageLowThresholdParm:
-    Type: Number
-  ApiTierCpuCreditsUsageHighThresholdParm:
-    Type: Number
-  ApiTierCpuCreditsUsageLowThresholdParm:
     Type: Number
   HealthCheckPathParm:
     Type: String

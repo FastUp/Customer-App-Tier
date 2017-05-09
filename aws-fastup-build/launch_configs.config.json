@@ -3,14 +3,8 @@
     "ParameterKey": "EnvironmentParm",
     "ParameterValue": "Staging"
   },
-  {
-    "ParameterKey": "ApiTierInstanceTypeParm",
-    "ParameterValue": "t2.micro"
-  },
-  {
-    "ParameterKey": "ApiTierAmiIdParm",
-    "ParameterValue": "ami-0777ed67"
-  },
+
+
   {
     "ParameterKey": "CustomerAppInstanceTypeParm",
     "ParameterValue": "t2.micro"

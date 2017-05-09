@@ -72,7 +72,8 @@ with open("aws-fastup-build/asgs.staging.config.json") as cr:
     asg_config = cr.read()
     print(asg_config)
 
-asg_config = re.sub("REPLACELAUNCHCONFIGSTACKNAME", stack_name, asg_config)
+asg_config = re.sub("REPLACE_LAUNCHCONFIGSTACKNAME", stack_name, asg_config)
+launch_config_config = re.sub("REPLACE_CONTEXTROOTPARM", war_file_name, asg_config)
 print(asg_config)
 new_config = {"Parameters": {}}
 for each_param in json.loads(asg_config):

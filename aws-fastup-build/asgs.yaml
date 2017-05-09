@@ -42,10 +42,16 @@ Resources:
 
   ApiTierAlbTargetGroup:
     Properties:
-      HealthCheckPath: !Ref HealthCheckPathParm
+      HealthCheckPath:
+        "Fn::Join":
+          - ""
+          - - "/"
+            - !Ref ContextRootParm
+            - "/"
+            - !Ref HealthCheckPathParm
       HealthCheckIntervalSeconds: 30
       HealthCheckProtocol: HTTP
-      HealthCheckPort: 80
+      HealthCheckPort: !Ref HealthCheckPortParm
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 5
       UnhealthyThresholdCount: 3
@@ -203,3 +209,7 @@ Parameters:
     Type: String
   HealthCheckGracePeriodParm:
     Type: Number
+  HealthCheckPortParm:
+    Type: Number
+  ContextRootParm:
+    Type: String

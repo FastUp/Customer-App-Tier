@@ -37,7 +37,7 @@
   },
   {
     "ParameterKey": "LaunchConfigurationStackNameParm",
-    "ParameterValue": "REPLACELAUNCHCONFIGSTACKNAME"
+    "ParameterValue": "REPLACE_LAUNCHCONFIGSTACKNAME"
   },
   {
     "ParameterKey": "NetworksStackNameParm",
@@ -53,7 +53,11 @@
   },
   {
     "ParameterKey": "HealthCheckPathParm",
-    "ParameterValue": "/service"
+    "ParameterValue": "service"
+  },
+  {
+    "ParameterKey": "ContextRootParm",
+    "ParameterValue": "REPLACE_CONTEXTROOTPARM"
   },
   {
     "ParameterKey": "DomainNameParm",
@@ -62,9 +66,13 @@
   {
     "ParameterKey": "HostNameParm",
     "ParameterValue": "spinsci"
-  }
-,  {
+  },
+  {
     "ParameterKey": "HealthCheckGracePeriodParm",
     "ParameterValue": "180"
+  },
+  {
+    "ParameterKey": "HealthCheckPortParm",
+    "ParameterValue": "8080"
   }
 ]

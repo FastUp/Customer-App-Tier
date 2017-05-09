@@ -40,8 +40,8 @@
     "ParameterValue": "REPLACE_RELEASEWARFILEKEYPARM"
   }
 ,  {
-    "ParameterKey": "ContextRootParm",
-    "ParameterValue": "REPLACE_CONTEXTROOTPARM"
+    "ParameterKey": "WarFileNameParm",
+    "ParameterValue": "REPLACE_WARFILENAME"
   }
 ]
 

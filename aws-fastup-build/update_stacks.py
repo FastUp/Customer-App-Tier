@@ -39,7 +39,7 @@ version_text = version_text.replace(".", "-").replace(":", "-")
 
 launch_config_config = re.sub("REPLACE_RELEASEARTIFACTSBUCKETPARM", release_bucket_name, launch_config_config)
 launch_config_config = re.sub("REPLACE_RELEASEWARFILEKEYPARM", war_file_key, launch_config_config)
-launch_config_config = re.sub("REPLACE_CONTEXTROOTPARM", war_file_name, launch_config_config)
+launch_config_config = re.sub("REPLACE_WARFILENAME", war_file_name, launch_config_config)
 
 with open("aws-fastup-build/launch_configs.config.json", "w") as cw:
     cw.write(launch_config_config)
@@ -73,7 +73,7 @@ with open("aws-fastup-build/asgs.staging.config.json") as cr:
     print(asg_config)
 
 asg_config = re.sub("REPLACE_LAUNCHCONFIGSTACKNAME", stack_name, asg_config)
-asg_config = re.sub("REPLACE_CONTEXTROOTPARM", war_file_name, asg_config)
+asg_config = re.sub("REPLACE_CONTEXTROOTPARM", war_file_name.split(".")[0], asg_config)
 print(asg_config)
 new_config = {"Parameters": {}}
 for each_param in json.loads(asg_config):

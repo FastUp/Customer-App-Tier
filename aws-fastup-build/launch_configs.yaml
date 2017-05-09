@@ -15,7 +15,7 @@ Resources:
   CustomerAppLaunchConfiguration:
     Properties:
       ImageId: !Ref CustomerAppAmiIdParm
-      KeyName:!Ref SshKeyPairNameParm
+      KeyName: !Ref SshKeyPairNameParm
       InstanceType: !Ref CustomerAppInstanceTypeParm
       UserData:
         Fn::Base64: !Sub |

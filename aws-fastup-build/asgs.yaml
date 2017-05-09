@@ -19,7 +19,7 @@ Resources:
       Port: 443
       Protocol: HTTPS
       Certificates:
-        - CertififcateArn: arn:aws:acm:us-west-2:085224677438:certificate/d203faf8-8641-4406-b117-75bd35c100be
+        - CertificateArn: arn:aws:acm:us-west-2:085224677438:certificate/d203faf8-8641-4406-b117-75bd35c100be
     Type: AWS::ElasticLoadBalancingV2::Listener
   AlbCname:
     Type: AWS::Route53::RecordSet

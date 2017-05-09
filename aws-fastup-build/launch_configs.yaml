@@ -6,7 +6,7 @@ Resources:
       ImageId: !Ref ApiTierAmiIdParm
       InstanceType: !Ref ApiTierInstanceTypeParm
       SecurityGroups:
-        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-BastionSecurityGroupIdOutput"
+        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-AppServerSecurityGroupIdOutput"
       UserData:
         Fn::Base64: !Sub |
            #!/bin/bash -xe
@@ -135,6 +135,8 @@ Parameters:
     Type: String
   SshKeyPairNameParm:
     Type: AWS::EC2::KeyPair::KeyName
+  NetworksStackNameParm:
+    Type: String
 
 
 Outputs:

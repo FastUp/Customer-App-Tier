@@ -4,6 +4,7 @@ Resources:
   ApiTierLaunchConfiguration:
     Properties:
       ImageId: !Ref ApiTierAmiIdParm
+      KeyName: !Ref SshKeyPairNameParm
       InstanceType: !Ref ApiTierInstanceTypeParm
       IamInstanceProfile:
         Fn::ImportValue: !Sub "${EntitiesStackNameParm}-AppServerInstanceProfileNameOutput"

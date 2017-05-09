@@ -13,7 +13,7 @@ xmlstring = re.sub(r'\sxmlns="[^"]+"', '', xmlstring, count=1)
 pom = ET.fromstring(xmlstring)
 version = pom.find("version")
 file_name = pom.find("artifactId")
-war_file_name = file_name + "-" + version + ".war"
+war_file_name = file_name + "-" + version.text + ".war"
 
 if "SNAPSHOT" in version.text:
     version_text = version.text + "-" + os.environ["CODEBUILD_BUILD_ID"]

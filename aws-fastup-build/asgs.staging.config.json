@@ -63,4 +63,8 @@
     "ParameterKey": "HostNameParm",
     "ParameterValue": "spinsci"
   }
+,  {
+    "ParameterKey": "HealthCheckGracePeriodParm",
+    "ParameterValue": "180"
+  }
 ]

@@ -90,6 +90,7 @@ Resources:
         - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PrivateGeneralPurposeSubnetAOutput"
         - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PrivateGeneralPurposeSubnetBOutput"
         - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PrivateGeneralPurposeSubnetCOutput"
+      HealthCheckGracePeriod: !Ref HealthCheckGracePeriodParm
       LaunchConfigurationName:
         Fn::ImportValue:
           !Sub "${LaunchConfigurationStackNameParm}-ApiTierLaunchConfigurationOutput"
@@ -200,3 +201,5 @@ Parameters:
     Type: String
   HostNameParm:
     Type: String
+  HealthCheckGracePeriodParm:
+    Type: Number

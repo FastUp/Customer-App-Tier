@@ -9,7 +9,7 @@ Resources:
         - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PublicGeneralPurposeSubnetBOutput"
         - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PublicGeneralPurposeSubnetCOutput"
       SecurityGroups:
-        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-AppTierAlbSecurityGroupIdOutput"
+        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-CustomerAppTierAlbSecurityGroupIdOutput"
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
   CustomerAppTierAlbSslListener:
     Properties:

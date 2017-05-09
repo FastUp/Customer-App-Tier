@@ -3,6 +3,7 @@ Description: ''
 Resources:
   CustomerAppTierAlb:
     Properties:
+      Scheme: internal
       Subnets:
         - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PublicGeneralPurposeSubnetAOutput"
         - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PublicGeneralPurposeSubnetBOutput"

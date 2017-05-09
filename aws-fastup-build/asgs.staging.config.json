@@ -45,11 +45,11 @@
   },
   {
     "ParameterKey": "DomainNameParm",
-    "ParameterValue": "fastup.io"
+    "ParameterValue": "spinsci.fastup.io"
   },
   {
     "ParameterKey": "HostNameParm",
-    "ParameterValue": "spinsci-customer-app-staging"
+    "ParameterValue": "customer"
   },
   {
     "ParameterKey": "HealthCheckGracePeriodParm",

@@ -50,5 +50,9 @@
   {
     "ParameterKey": "CustomerAppTierCpuCreditsUsageLowThresholdParm",
     "ParameterValue": "8"
+  },
+  {
+    "ParameterKey": "HealthCheckPathParm",
+    "ParameterValue": "/service"
   }
 ]

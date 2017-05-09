@@ -1,6 +1,51 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: ''
 Resources:
+  ApiTierAlb:
+    Properties:
+      Subnets:
+        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PublicGeneralPurposeSubnetAOutput"
+        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PublicGeneralPurposeSubnetBOutput"
+        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-PublicGeneralPurposeSubnetCOutput"
+      SecurityGroups:
+        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-AppTierAlbSecurityGroupIdOutput"
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+  ApiTierAlbSslListener:
+    Properties:
+      LoadBalancerArn: !Ref ApiTierAlb
+      DefaultActions:
+        - TargetGroupArn: !Ref ApiTierAlbTarget
+          Type: forward
+      Port: 443
+      Protocol: HTTPS
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  ApiTierAlbTarget:
+    Properties:
+      HealthCheckPath: !Ref HealthCheckPathParm
+      HealthCheckIntervalSeconds: 30
+      HealthCheckProtocol: HTTP
+      HealthCheckPort: 80
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 5
+      UnhealthyThresholdCount: 3
+      VpcId:
+        Fn::ImportValue: !Sub "${NetworksStackNameParm}-VpcIdOutput"
+      Port: 80
+      Protocol: HTTP
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  ApiTierAlbListenerRule:
+    Properties:
+      Actions:
+        - TargetGroupArn: !Ref ApiTierAlbTarget
+          Type: forward
+      Conditions:
+        - Field: path-pattern
+          Values:
+            - !Ref EnvironmentParm
+      ListenerArn: !Ref ApiTierAlbSslListener
+      Priority: 100
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+
   ApiTierAutoscalingGroup:
     UpdatePolicy:
       AutoScalingRollingUpdate:
@@ -125,3 +170,5 @@ Parameters:
     Type: Number
   CustomerAppTierCpuCreditsUsageLowThresholdParm:
     Type: Number
+  HealthCheckPathParm:
+    Type: String

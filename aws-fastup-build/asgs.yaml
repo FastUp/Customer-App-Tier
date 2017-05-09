@@ -14,7 +14,7 @@ Resources:
     Properties:
       LoadBalancerArn: !Ref ApiTierAlb
       DefaultActions:
-        - TargetGroupArn: !Ref ApiTierAlbTarget
+        - TargetGroupArn: !Ref ApiTierAlbTargetGroup
           Type: forward
       Port: 443
       Protocol: HTTPS
@@ -40,7 +40,7 @@ Resources:
         HostedZoneId: !GetAtt ApiTierAlb.CanonicalHostedZoneID
         DNSName: !GetAtt ApiTierAlb.DNSName
 
-  ApiTierAlbTarget:
+  ApiTierAlbTargetGroup:
     Properties:
       HealthCheckPath: !Ref HealthCheckPathParm
       HealthCheckIntervalSeconds: 30
@@ -57,7 +57,7 @@ Resources:
   ApiTierAlbListenerRule:
     Properties:
       Actions:
-        - TargetGroupArn: !Ref ApiTierAlbTarget
+        - TargetGroupArn: !Ref ApiTierAlbTargetGroup
           Type: forward
       Conditions:
         - Field: path-pattern
@@ -80,6 +80,9 @@ Resources:
           - ScheduledActions
     Properties:
       MaxSize: !Ref ApiTierAsgMaxSizeParm
+      HealthCheckType: ELB
+      TargetGroupARNs:
+        - !Ref ApiTierAlbTargetGroup
       MinSize: !Ref ApiTierAsgMinSizeParm
       AvailabilityZones: !Ref ApiTierAsgAzsParm
       DesiredCapacity: !Ref ApiTierAsgDesiredCapacityParm

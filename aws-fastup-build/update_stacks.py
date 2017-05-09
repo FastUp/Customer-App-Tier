@@ -12,9 +12,11 @@ with open("pom.xml") as f:
 xmlstring = re.sub(r'\sxmlns="[^"]+"', '', xmlstring, count=1)
 pom = ET.fromstring(xmlstring)
 version = pom.find("version")
-file_name = pom.find("artifactId")
-war_file_name = file_name + "-" + version.text + ".war"
-
+pom_artifact_id = pom.find("artifactId")
+print(version.text)
+print(pom_artifact_id.text)
+war_file_name = pom_artifact_id.text + "-" + version.text + ".war"
+print(war_file_name)
 if "SNAPSHOT" in version.text:
     version_text = version.text + "-" + os.environ["CODEBUILD_BUILD_ID"]
 else:

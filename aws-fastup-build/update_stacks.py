@@ -23,7 +23,7 @@ else:
     version_text = version.text
 
 s3 = boto3.client("s3")
-war_file_key = "war_files" + os.environ["CODEBUILD_BUILD_ID"].replace(":", "-") + "/" + war_file_name
+war_file_key = "war_files/" + os.environ["CODEBUILD_BUILD_ID"].replace(":", "-") + "/" + war_file_name
 release_bucket_name = "spinsci-entities-1-0-0-sta-releaseartifactsbucket-mtqcxm5k34ox"
 upload_file_return = s3.upload_file("target/" + war_file_name, release_bucket_name, war_file_key)
 print(upload_file_return)

@@ -57,7 +57,7 @@ Resources:
       UnhealthyThresholdCount: 3
       VpcId:
         Fn::ImportValue: !Sub "${NetworksStackNameParm}-VpcIdOutput"
-      Port: 80
+      Port: 8080
       Protocol: HTTP
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
   ApiTierAlbListenerRule:

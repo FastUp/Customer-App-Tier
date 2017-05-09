@@ -21,6 +21,25 @@ Resources:
       Certificates:
         - CertififcateArn: arn:aws:acm:us-west-2:085224677438:certificate/d203faf8-8641-4406-b117-75bd35c100be
     Type: AWS::ElasticLoadBalancingV2::Listener
+  AlbCname:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Type: A
+      HostedZoneName:
+        "Fn::Join":
+          - ""
+          - - !Ref DomainNameParm
+            - "."
+      Name:
+        "Fn::Join":
+          - ""
+          - - !Ref HostNameParm
+            - "."
+            - !Ref DomainNameParm
+      AliasTarget:
+        HostedZoneId: !GetAtt ApiTierAlb.CanonicalHostedZoneID
+        DNSName: !GetAtt ApiTierAlb.DNSName
+
   ApiTierAlbTarget:
     Properties:
       HealthCheckPath: !Ref HealthCheckPathParm
@@ -173,4 +192,8 @@ Parameters:
   CustomerAppTierCpuCreditsUsageLowThresholdParm:
     Type: Number
   HealthCheckPathParm:
+    Type: String
+  DomainNameParm:
+    Type: String
+  HostNameParm:
     Type: String

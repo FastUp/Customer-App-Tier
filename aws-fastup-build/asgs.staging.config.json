@@ -54,5 +54,13 @@
   {
     "ParameterKey": "HealthCheckPathParm",
     "ParameterValue": "/service"
+  },
+  {
+    "ParameterKey": "DomainNameParm",
+    "ParameterValue": "fastup.io"
+  },
+  {
+    "ParameterKey": "HostNameParm",
+    "ParameterValue": "spinsci"
   }
 ]

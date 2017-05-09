@@ -9,7 +9,7 @@ Resources:
       IamInstanceProfile:
         Fn::ImportValue: !Sub "${EntitiesStackNameParm}-AppServerInstanceProfileNameOutput"
       SecurityGroups:
-        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-AppServerSecurityGroupIdOutput"
+        - Fn::ImportValue: !Sub "${NetworksStackNameParm}-CustomerAppTierAppServerSecurityGroupIdOutput"
       UserData:
         Fn::Base64: !Sub |
            #!/bin/bash -xe

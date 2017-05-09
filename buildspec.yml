@@ -14,6 +14,5 @@ phases:
 
 artifacts:
   files:
-    - target/simplewar-1.0-SNAPSHOT.war
-    - aws-fastup-build/asgs.staging.config.json
-    - aws-fastup-build/asgs.yaml
+    - target/*
+    - aws-fastup-build/*

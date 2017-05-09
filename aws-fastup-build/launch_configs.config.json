@@ -22,6 +22,14 @@
   {
     "ParameterKey": "AppTierVersionNumberParm",
     "ParameterValue": "REPLACEAPPTIERVERSIONNUMBERPARM"
+  },
+  {
+    "ParameterKey": "EntitiesStackNameParm",
+    "ParameterValue": "SpinSci-Entities-1-0-0-staging"
+  },
+  {
+    "ParameterKey": "CustomerAppArtifactUrlParm",
+    "ParameterValue": "REPLACECUSTOMERAPPARTIFACTURLPARM"
   }
 ]
 

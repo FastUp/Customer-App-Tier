@@ -95,7 +95,7 @@ Resources:
         InstallApp:
           files:
             /tmp/artifact:
-              source: !Ref CustomerAppWarFileUrlParm,
+              source: !Ref CustomerAppArtifactUrlParm,
               authentication: S3AccessCreds
               group: root
               mode: '000400'
@@ -123,7 +123,9 @@ Parameters:
     Type: String
   CustomerAppAmiIdParm:
     Type: AWS::EC2::Image::Id
-  CustomerAppWarFileUrlParm:
+  CustomerAppArtifactUrlParm:
+    Type: String
+  EntitiesStackNameParm:
     Type: String
 
 

@@ -95,7 +95,7 @@ Resources:
         InstallApp:
           files:
             /tmp/artifact:
-              source: !Ref CustomerAppArtifactUrlParm,
+              source: !Ref CustomerAppArtifactUrlParm
               authentication: S3AccessCreds
               group: root
               mode: '000400'

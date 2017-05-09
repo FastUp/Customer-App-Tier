@@ -24,6 +24,10 @@
     "ParameterValue": "SpinSci-Entities-1-0-0-staging"
   },
   {
+    "ParameterKey": "SshKeyPairNameParm",
+    "ParameterValue": "sdole-us-west-2"
+  },
+  {
     "ParameterKey": "CustomerAppArtifactUrlParm",
     "ParameterValue": "REPLACECUSTOMERAPPARTIFACTURLPARM"
   }

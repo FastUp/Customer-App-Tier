@@ -15,6 +15,7 @@ Resources:
   CustomerAppLaunchConfiguration:
     Properties:
       ImageId: !Ref CustomerAppAmiIdParm
+      KeyName:!Ref SshKeyPairNameParm
       InstanceType: !Ref CustomerAppInstanceTypeParm
       UserData:
         Fn::Base64: !Sub |
@@ -127,6 +128,8 @@ Parameters:
     Type: String
   EntitiesStackNameParm:
     Type: String
+  SshKeyPairNameParm:
+    Type: AWS::EC2::KeyPair::KeyName
 
 
 Outputs:

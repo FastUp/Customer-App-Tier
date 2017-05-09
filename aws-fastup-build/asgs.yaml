@@ -21,7 +21,7 @@ Resources:
       Certificates:
         - CertificateArn: arn:aws:acm:us-west-2:085224677438:certificate/d203faf8-8641-4406-b117-75bd35c100be
     Type: AWS::ElasticLoadBalancingV2::Listener
-  AlbCname:
+  ApiTierAlbCname:
     Type: AWS::Route53::RecordSet
     Properties:
       Type: A
@@ -101,7 +101,51 @@ Resources:
         Fn::ImportValue:
           !Sub "${LaunchConfigurationStackNameParm}-ApiTierLaunchConfigurationOutput"
     Type: AWS::AutoScaling::AutoScalingGroup
-  CustomerAppAutoscalingGroup:
+  ApiTierScaleOutPolicy:
+    Properties:
+      AutoScalingGroupName: !Ref ApiTierAutoscalingGroup
+      AdjustmentType: ChangeInCapacity
+      PolicyType: SimpleScaling
+      ScalingAdjustment: 1
+    Type: AWS::AutoScaling::ScalingPolicy
+  ApiTierCpuCreditsUsageHighAlarm:
+    Properties:
+      ComparisonOperator: GreaterThanThreshold
+      Threshold: !Ref ApiTierCpuCreditsUsageHighThresholdParm
+      Dimensions:
+        - Name: AutoScalingGroupName
+          Value: !Ref ApiTierAutoscalingGroup
+      EvaluationPeriods: 1
+      MetricName: CPUCreditUsage
+      Namespace: AWS/EC2
+      Period: 300
+      Statistic: Average
+      AlarmActions:
+        - !Ref ApiTierScaleOutPolicy
+    Type: AWS::CloudWatch::Alarm
+  ApiTierScaleInPolicy:
+    Properties:
+      AutoScalingGroupName: !Ref ApiTierAutoscalingGroup
+      AdjustmentType: ChangeInCapacity
+      PolicyType: SimpleScaling
+      ScalingAdjustment: -1
+    Type: AWS::AutoScaling::ScalingPolicy
+  ApiTierCpuCreditsUsageLowAlarm:
+    Properties:
+      ComparisonOperator: LessThanThreshold
+      Threshold: !Ref ApiTierCpuCreditsUsageLowThresholdParm
+      Dimensions:
+        - Name: AutoScalingGroupName
+          Value: !Ref ApiTierAutoscalingGroup
+      EvaluationPeriods: 36
+      MetricName: CPUCreditUsage
+      Namespace: AWS/EC2
+      Period: 300
+      Statistic: Average
+      AlarmActions:
+        - !Ref ApiTierScaleInPolicy
+    Type: AWS::CloudWatch::Alarm
+  CustomerAppTierAutoscalingGroup:
     UpdatePolicy:
       AutoScalingRollingUpdate:
         MaxBatchSize: 1
@@ -127,7 +171,7 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
   CustomerAppTierScaleOutPolicy:
     Properties:
-      AutoScalingGroupName: !Ref ApiTierAutoscalingGroup
+      AutoScalingGroupName: !Ref CustomerAppTierAutoscalingGroup
       AdjustmentType: ChangeInCapacity
       PolicyType: SimpleScaling
       ScalingAdjustment: 1
@@ -138,7 +182,7 @@ Resources:
       Threshold: !Ref CustomerAppTierCpuCreditsUsageHighThresholdParm
       Dimensions:
         - Name: AutoScalingGroupName
-          Value: !Ref ApiTierAutoscalingGroup
+          Value: !Ref CustomerAppTierAutoscalingGroup
       EvaluationPeriods: 1
       MetricName: CPUCreditUsage
       Namespace: AWS/EC2
@@ -149,7 +193,7 @@ Resources:
     Type: AWS::CloudWatch::Alarm
   CustomerAppTierScaleInPolicy:
     Properties:
-      AutoScalingGroupName: !Ref ApiTierAutoscalingGroup
+      AutoScalingGroupName: !Ref CustomerAppTierAutoscalingGroup
       AdjustmentType: ChangeInCapacity
       PolicyType: SimpleScaling
       ScalingAdjustment: -1
@@ -160,7 +204,7 @@ Resources:
       Threshold: !Ref CustomerAppTierCpuCreditsUsageLowThresholdParm
       Dimensions:
         - Name: AutoScalingGroupName
-          Value: !Ref ApiTierAutoscalingGroup
+          Value: !Ref CustomerAppTierAutoscalingGroup
       EvaluationPeriods: 36
       MetricName: CPUCreditUsage
       Namespace: AWS/EC2
@@ -200,6 +244,10 @@ Parameters:
   CustomerAppTierCpuCreditsUsageHighThresholdParm:
     Type: Number
   CustomerAppTierCpuCreditsUsageLowThresholdParm:
+    Type: Number
+  ApiTierCpuCreditsUsageHighThresholdParm:
+    Type: Number
+  ApiTierCpuCreditsUsageLowThresholdParm:
     Type: Number
   HealthCheckPathParm:
     Type: String

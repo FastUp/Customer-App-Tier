@@ -35,7 +35,7 @@ print(war_s3_url)
 with open("aws-fastup-build/launch_configs.config.json") as cr:
     launch_config_config = cr.read()
 
-# version_text = version_text.replace(".", "-").replace(":", "-")
+version_text = version_text.replace(".", "-").replace(":", "-")
 # launch_config_config = re.sub("REPLACEAPPTIERVERSIONNUMBERPARM", version_text, launch_config_config)
 
 launch_config_config = re.sub("REPLACECUSTOMERAPPARTIFACTURLPARM", war_s3_url, launch_config_config)

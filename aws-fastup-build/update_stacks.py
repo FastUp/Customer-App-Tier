@@ -22,11 +22,6 @@ if "SNAPSHOT" in version.text:
 else:
     version_text = version.text
 
-with open("aws-fastup-build/launch_configs.config.json") as cr:
-    launch_config_config = cr.read()
-
-version_text = version_text.replace(".", "-").replace(":", "-")
-launch_config_config = re.sub("REPLACEAPPTIERVERSIONNUMBERPARM", version_text, launch_config_config)
 
 s3 = boto3.client("s3")
 war_file_key = os.environ["CODEBUILD_BUILD_ID"] + "/" + war_file_name
@@ -36,6 +31,13 @@ print(upload_file_return)
 region_prefix = "" if os.environ["AWS_DEFAULT_REGION"] == "us-east-1" else "-" + os.environ["AWS_DEFAULT_REGION"]
 war_s3_url = "https://" + release_bucket_name + ".s3" + region_prefix + ".amazonaws.com/" + war_file_key
 print(war_s3_url)
+
+with open("aws-fastup-build/launch_configs.config.json") as cr:
+    launch_config_config = cr.read()
+
+# version_text = version_text.replace(".", "-").replace(":", "-")
+# launch_config_config = re.sub("REPLACEAPPTIERVERSIONNUMBERPARM", version_text, launch_config_config)
+
 launch_config_config = re.sub("REPLACECUSTOMERAPPARTIFACTURLPARM", war_s3_url, launch_config_config)
 
 with open("aws-fastup-build/launch_configs.config.json", "w") as cw:

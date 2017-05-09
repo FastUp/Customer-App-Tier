@@ -20,10 +20,6 @@
     "ParameterValue": "ami-0777ed67"
   },
   {
-    "ParameterKey": "AppTierVersionNumberParm",
-    "ParameterValue": "REPLACEAPPTIERVERSIONNUMBERPARM"
-  },
-  {
     "ParameterKey": "EntitiesStackNameParm",
     "ParameterValue": "SpinSci-Entities-1-0-0-staging"
   },

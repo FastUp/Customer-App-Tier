@@ -45,7 +45,7 @@
   },
   {
     "ParameterKey": "DomainNameParm",
-    "ParameterValue": "spinsci.fastup.io"
+    "ParameterValue": "spinscicloud.fastup.io"
   },
   {
     "ParameterKey": "HostNameParm",
@@ -58,5 +58,9 @@
   {
     "ParameterKey": "HealthCheckPortParm",
     "ParameterValue": "8080"
+  }
+,  {
+    "ParameterKey": "AcmCertArnParm",
+    "ParameterValue": "arn:aws:acm:us-west-2:680092941942:certificate/7cbba4ea-1b06-4ade-a707-23d9d725616b"
   }
 ]

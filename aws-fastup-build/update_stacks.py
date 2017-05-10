@@ -24,7 +24,7 @@ else:
 
 s3 = boto3.client("s3")
 war_file_key = "war_files/" + os.environ["CODEBUILD_BUILD_ID"].replace(":", "-") + "/" + war_file_name
-release_bucket_name = "spinsci-entities-1-0-0-sta-releaseartifactsbucket-mtqcxm5k34ox"
+release_bucket_name = "entities-1-0-0-releaseartifactsbucket-1x4qcvatwzdev"
 upload_file_return = s3.upload_file("target/" + war_file_name, release_bucket_name, war_file_key)
 print(upload_file_return)
 # region_prefix = "" if os.environ["AWS_DEFAULT_REGION"] == "us-east-1" else "-" + os.environ["AWS_DEFAULT_REGION"]
@@ -50,7 +50,7 @@ with open("aws-fastup-build/launch_configs.yaml") as template_stream:
     lines = template_stream.readlines()
     for line in lines:
         data += line
-stack_name = "SpinSciCustomerApp-" + version_text
+stack_name = "CustomerApp-" + version_text
 new_stack = cf_client.create_stack(
     StackName=stack_name,
     TemplateBody=data,

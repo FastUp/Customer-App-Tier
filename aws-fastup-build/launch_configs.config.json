@@ -11,19 +11,19 @@
   },
   {
     "ParameterKey": "CustomerAppAmiIdParm",
-    "ParameterValue": "ami-0777ed67"
+    "ParameterValue": "ami-a41c79c4"
   },
   {
     "ParameterKey": "EntitiesStackNameParm",
-    "ParameterValue": "SpinSci-Entities-1-0-0-staging"
+    "ParameterValue": "Entities-1-0-0"
   },
   {
     "ParameterKey": "NetworksStackNameParm",
-    "ParameterValue": "SpinSci-Network-1-0-0-staging"
+    "ParameterValue": "Network-1-0-0-staging"
   },
   {
     "ParameterKey": "SshKeyPairNameParm",
-    "ParameterValue": "sdole-us-west-2"
+    "ParameterValue": "ac-servers"
   },
   {
     "ParameterKey": "ReleaseArtifactsBucketParm",

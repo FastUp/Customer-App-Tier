@@ -5,7 +5,7 @@
   },
   {
     "ParameterKey": "CustomerAppAsgMinSizeParm",
-    "ParameterValue": "2"
+    "ParameterValue": "1"
   },
   {
     "ParameterKey": "CustomerAppAsgMaxSizeParm",
@@ -13,7 +13,7 @@
   },
   {
     "ParameterKey": "CustomerAppAsgDesiredCapacityParm",
-    "ParameterValue": "2"
+    "ParameterValue": "1"
   },
   {
     "ParameterKey": "CustomerAppAsgAzsParm",

@@ -10,7 +10,7 @@ public class SimpleServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
-        out.println("{'message':'hello world FROM CUSTOMER APP','version':" + System.getenv("FastupVersion") + "}");
+        out.println("{'message':'hello world SpinSci Customer App','version':" + System.getenv("FastupVersion") + "}");
         out.flush();
         out.close();
     }

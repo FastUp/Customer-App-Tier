@@ -101,6 +101,11 @@ Resources:
       LaunchConfigurationName:
         Fn::ImportValue:
           !Sub "${LaunchConfigurationStackNameParm}-CustomerAppLaunchConfigurationOutput"
+      Tags:
+        - Key: Name
+          Value: CustomerAppTierServer
+          PropagateAtLaunch: True
+
     Type: AWS::AutoScaling::AutoScalingGroup
   CustomerAppTierScaleOutPolicy:
     Properties:
@@ -183,4 +188,6 @@ Parameters:
   ContextRootParm:
     Type: String
   AcmCertArnParm:
+    Type: String
+  NameTagParm:
     Type: String

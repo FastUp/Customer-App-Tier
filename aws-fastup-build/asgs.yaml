@@ -105,6 +105,9 @@ Resources:
         - Key: Name
           Value: CustomerAppTierServer
           PropagateAtLaunch: True
+        - Key: Environment
+          Value: !Ref EnvironmentParm
+          PropagateAtLaunch: True
 
     Type: AWS::AutoScaling::AutoScalingGroup
   CustomerAppTierScaleOutPolicy:

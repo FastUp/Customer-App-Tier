@@ -4,7 +4,6 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - ls -al
       - mvn package
   post_build:
     commands:

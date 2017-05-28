@@ -11,7 +11,7 @@
   },
   {
     "ParameterKey": "CustomerAppAmiIdParm",
-    "ParameterValue": "ami-801577e0"
+    "ParameterValue": "ami-a41c79c4"
   },
   {
     "ParameterKey": "EntitiesStackNameParm",

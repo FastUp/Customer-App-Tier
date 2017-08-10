@@ -61,7 +61,7 @@
   },
   {
     "ParameterKey": "AcmCertArnParm",
-    "ParameterValue": "arn:aws:acm:us-west-2:680092941942:certificate/7cbba4ea-1b06-4ade-a707-23d9d725616b"
+    "ParameterValue": "arn:aws:acm:us-west-2:680092941942:certificate/95815666-7871-49f9-923d-d120b5c119c4"
   },
   {
     "ParameterKey": "NameTagParm",
